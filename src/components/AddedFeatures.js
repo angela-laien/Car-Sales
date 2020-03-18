@@ -11,7 +11,6 @@ const AddedFeatures = props => {
           {props.car.features.map(feature => (
             <AddedFeature 
               key={feature.id} 
-              id={feature.id}
               feature={feature} 
               removeFeature={props.removeFeature}/>
           ))}

@@ -1,4 +1,6 @@
 import React from 'react';
+import { removeFeature } from '../actions/carActions';
+import { connect } from 'react-redux';
 
 const AddedFeature = props => {
   return (
@@ -7,11 +9,19 @@ const AddedFeature = props => {
       <button 
         className="button"
         onClick={() => 
-        props.removeFeature({id: props.id, price: props.feature.price})}>   
+          props.removeFeature(props.feature)}>  
+        {/* props.removeFeature({id: props.id, price: props.feature.price})}>    */}
       X</button>  
       {props.feature.name}
     </li>
   );
 };
 
-export default AddedFeature;
+const mapStateToProps = state => {
+  return {}
+}
+
+export default connect(
+  mapStateToProps,
+  { removeFeature }
+)(AddedFeature);

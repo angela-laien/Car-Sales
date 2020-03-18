@@ -1,11 +1,13 @@
+import { REMOVE_FEATURE, ADD_FEATURE } from "../actions/carActions";
+
 const initialState = {
     additionalPrice: 0,
     car: {
-    price: 26395,
-    name: '2019 Ford Mustang',
-    image:
-        'https://cdn.motor1.com/images/mgl/0AN2V/s1/2019-ford-mustang-bullitt.jpg',
-    features: []
+        price: 26395,
+        name: '2019 Ford Mustang',
+        image:
+            'https://cdn.motor1.com/images/mgl/0AN2V/s1/2019-ford-mustang-bullitt.jpg',
+        features: []
     },
     additionalFeatures: [
     { id: 1, name: 'V-6 engine', price: 1500 },
@@ -16,11 +18,26 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-    switch(action.type) {
-        case 'ADD_FEATURE':
+    switch (action.type) {
+        case REMOVE_FEATURE:
             return {
                 ...state,
-                additonalPrice: state.additionalPrice + action.payload.price,
+                car: {
+                    ...state.car,
+                    price: state.car.price - action.payload.price,
+                    features: [
+                        ...state.car.features.filter(feature => feature.id !== action.payload.id)
+                    ]
+                },
+                    additionalFeatures: [
+                        ...state.additionalFeatures,
+                        action.payload
+                    ],
+                additionalPrice: state.additonalPrice - action.payload.price
+            }
+        case ADD_FEATURE:
+            return {
+                ...state,
                 car: {
                     ...state.car,
                     price: state.car.price + action.payload.price,
@@ -28,22 +45,13 @@ const reducer = (state = initialState, action) => {
                         ...state.car.features,
                         action.payload
                     ]
-                }
-            }
-        case 'REMOVE_FEATURE':
-            return {
-                ...state,
-                additionalPrice: state.additonalPrice - action.payload.price,
-                car: {
-                    ...state.car,
-                    price: state.car.price - action.payload.price,
-                    features: [
-                        ...state.car.features.filter(feature => feature.id !== action.payload.id)
-                    ]
-                }
+                },
+                additionalFeatures: state.additionalFeatures.filter(feature => feature.id !== action.payload.id)
+                ,
+                additonalPrice: state.additionalPrice + action.payload.price,
             }
         default:
-            return state
+            return state;
     }
 }
 
